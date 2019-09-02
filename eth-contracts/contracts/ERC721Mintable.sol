@@ -13,7 +13,8 @@ contract Ownable {
     event OwnerChanged(address owner);
 
     //  2) create an internal constructor that sets the _owner var to the creater of the contract
-    constructor() public {
+    constructor() public
+    {
         _owner = msg.sender;
         emit OwnerChanged(msg.sender);
     }
@@ -42,12 +43,46 @@ contract Ownable {
     }
 }
 
-//  TODO's: Create a Pausable contract that inherits from the Ownable contract
+//  Create a Pausable contract that inherits from the Ownable contract
 //  1) create a private '_paused' variable of type bool
-//  2) create a public setter using the inherited onlyOwner modifier 
+//  2) create a public setter using the inherited onlyOwner modifier
 //  3) create an internal constructor that sets the _paused variable to false
 //  4) create 'whenNotPaused' & 'paused' modifier that throws in the appropriate situation
 //  5) create a Paused & Unpaused event that emits the address that triggered the event
+contract Pausable is Ownable {
+    bool private _paused;
+
+    event Paused();
+    event Unpaused();
+
+    constructor() public
+    {
+        _paused = false;
+        emit Unpaused();
+    }
+
+    modifier whenNotPaused()
+    {
+        require(!_paused, "Contract is paused");
+        _;
+    }
+
+    modifier paused()
+    {
+        require(_paused, "Contract is not paused");
+        _;
+    }
+
+    function setPaused(bool isPaused) public onlyOwner
+    {
+        _paused = isPaused;
+        if (_paused) {
+            emit Paused();
+        } else {
+            emit Unpaused();
+        }
+    }
+}
 
 contract ERC165 {
     bytes4 private constant _INTERFACE_ID_ERC165 = 0x01ffc9a7;
