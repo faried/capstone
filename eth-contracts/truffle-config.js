@@ -27,6 +27,9 @@
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 const infuraKey = "846e4d39dbcb4a8aaca6a562c16cae7d";
 
+const fs = require('fs');
+const mnemonic = fs.readFileSync("../../.secret").toString().trim();
+
 module.exports = {
     plugins: ["truffle-security"],
     /**
@@ -75,7 +78,7 @@ module.exports = {
         rinkeby: {
             provider: () => new HDWalletProvider(mnemonic, `https://rinkeby.infura.io/v3/${infuraKey}`),
             network_id: 4,       // rinkeby's id
-            gas: 6000000,        // rinkeby has a lower block limit than mainnet
+            gas: 0x6acfc0,       // rinkeby has a lower block limit than mainnet
             gasPrice: 10000000000
         }
 
