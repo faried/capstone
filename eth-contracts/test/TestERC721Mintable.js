@@ -1,11 +1,11 @@
-const ERC721MintableComplete = artifacts.require('SleepyTokenContract'); // ERC721MintableComplete');
+const ERC721MintableComplete = artifacts.require("SleepyTokenContract"); // ERC721MintableComplete");
 
-contract('TestERC721Mintable', accounts => {
+contract("TestERC721Mintable", accounts => {
 
     const deployer = accounts[9]; // this was accounts[0] in the original test code
     const TOKENS_TO_MINT = 5;
 
-    describe('match erc721 spec', function () {
+    describe("match erc721 spec", function () {
         beforeEach(async function () {
             this.contract = await ERC721MintableComplete.new({from: deployer});
 
@@ -15,13 +15,13 @@ contract('TestERC721Mintable', accounts => {
             }
         });
 
-        it('should return total supply', async function () {
+        it("should return total supply", async function () {
             const supply = await this.contract.totalSupply.call();
 
             assert.equal(supply, TOKENS_TO_MINT, `should have ${TOKENS_TO_MINT} tokens minuted`);
         });
 
-        it('should get token balance', async function () {
+        it("should get token balance", async function () {
             let tokens = await this.contract.balanceOf.call(accounts[1]);
 
             assert.equal(tokens, 1, `${accounts[1]} does not have the expected number of tokens`);
@@ -32,13 +32,13 @@ contract('TestERC721Mintable', accounts => {
         });
 
         // token uri should be complete i.e: https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/1
-        it('should return token uri', async function () {
+        it("should return token uri", async function () {
             const uri = await this.contract.tokenURI.call(4);
 
             assert.equal(uri, "https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/4", "URI is incorrect");
         });
 
-        it('should transfer token from one owner to another', async function () {
+        it("should transfer token from one owner to another", async function () {
             // accounts[1] transfers token to accounts[3]
             await this.contract.transferFrom(accounts[1], accounts[3], 1, {from: accounts[1]});
 
@@ -54,12 +54,12 @@ contract('TestERC721Mintable', accounts => {
         });
     });
 
-    describe('have ownership properties', function () {
+    describe("have ownership properties", function () {
         beforeEach(async function () {
             this.contract = await ERC721MintableComplete.new({from: deployer});
         });
 
-        it('should fail when minting when address is not contract owner', async function () {
+        it("should fail when minting when address is not contract owner", async function () {
             let minted = true;
 
             try {
@@ -72,7 +72,7 @@ contract('TestERC721Mintable', accounts => {
             assert.equal(minted, false, "should not be able to mint tokens by anyone other than the deployer");
         });
 
-        it('should return contract owner', async function () {
+        it("should return contract owner", async function () {
 
             let owner = await this.contract.owner.call();
 
@@ -95,6 +95,5 @@ contract('TestERC721Mintable', accounts => {
 
             assert.equal(owner, accounts[5], `new owner is not ${accounts[5]}`);
         });
-
     });
 });
