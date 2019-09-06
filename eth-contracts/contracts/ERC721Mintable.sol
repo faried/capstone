@@ -277,7 +277,8 @@ contract ERC721 is Pausable, ERC165 {
         require(owner == from, "Token is not owned by from address");
 
         // require token is being transfered to valid address
-        require(to != address(0) || to == from, "Token transfer address is invalid");
+        require(to != address(0), "Token transfer address is invalid");
+        require(to != from, "Token transfer address is invalid");
 
         // clear approval
         _clearApproval(tokenId);
