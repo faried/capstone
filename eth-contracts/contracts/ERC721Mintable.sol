@@ -55,7 +55,7 @@ contract Pausable is Ownable {
     event Paused();
     event Unpaused();
 
-    constructor() public
+    constructor() internal
     {
         _paused = false;
         emit Unpaused();
@@ -171,7 +171,7 @@ contract ERC721 is Pausable, ERC165 {
      * @param to address to approve
      * @param tokenId token to approve for transfer
      */
-    function approve(address to, uint256 tokenId) public {
+    function approve(address to, uint256 tokenId) public whenNotPaused {
         address tokOwner = ownerOf(tokenId);
 
         // require the given address to not be the owner of the tokenId
@@ -198,7 +198,7 @@ contract ERC721 is Pausable, ERC165 {
      * @param to operator address to set the approval
      * @param approved representing the status of the approval to be set
      */
-    function setApprovalForAll(address to, bool approved) public {
+    function setApprovalForAll(address to, bool approved) public whenNotPaused {
         require(to != msg.sender, "Cannot send token to yourself");
         _operatorApprovals[msg.sender][to] = approved;
         emit ApprovalForAll(msg.sender, to, approved);
@@ -214,17 +214,17 @@ contract ERC721 is Pausable, ERC165 {
         return _operatorApprovals[owner][operator];
     }
 
-    function transferFrom(address from, address to, uint256 tokenId) public {
+    function transferFrom(address from, address to, uint256 tokenId) public whenNotPaused {
         require(_isApprovedOrOwner(msg.sender, tokenId));
 
         _transferFrom(from, to, tokenId);
     }
 
-    function safeTransferFrom(address from, address to, uint256 tokenId) public {
+    function safeTransferFrom(address from, address to, uint256 tokenId) public whenNotPaused {
         safeTransferFrom(from, to, tokenId, "");
     }
 
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public {
+    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public whenNotPaused {
         transferFrom(from, to, tokenId);
         require(_checkOnERC721Received(from, to, tokenId, _data));
     }
