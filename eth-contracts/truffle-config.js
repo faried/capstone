@@ -78,7 +78,7 @@ module.exports = {
         rinkeby: {
             provider: () => new HDWalletProvider(mnemonic, `https://rinkeby.infura.io/v3/${infuraKey}`),
             network_id: 4,       // rinkeby's id
-            gas: 0x6acfc0,       // rinkeby has a lower block limit than mainnet
+            gas: 0x6a9c33,       // rinkeby has a lower block limit than mainnet
             gasPrice: 10000000000
         }
 
@@ -101,7 +101,7 @@ module.exports = {
             version: "0.5.11",
             settings: {          // See the solidity docs for advice about optimization and evmVersion
               optimizer: {
-                enabled: false,
+                enabled: true,
                 runs: 200
               }
             }
