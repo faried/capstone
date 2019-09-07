@@ -15,7 +15,6 @@ Since `SolnSquareVerifier` depends on the `Verifier` contract,
 `migrations/2_deploy_contracts.js` was modified to pass
 `Verifier.address` to `SolnSquareVerifier`.
 
-
 ## Token
 
 The name of the token is
@@ -54,12 +53,30 @@ generated.  They are in the `zokrates/code/square/proofs` directory.
 Due to an error made while minting the tokens manually,
 `test-proof-2.json` was used instead of `prod-proof-12.json`.
 
+After running these steps under docker
+
+    ~/zokrates compile -i square.code
+    ~/zokrates setup
+
+I generated the test/prod proofs with
+
+    mkdir proofs
+
+    for i in `seq 0 9`; do
+      ~/zokrates compute-witness -o proofs/test-witness.$i -a $i $((i*i))
+      ~/zokrates generate-proof -j proofs/test-proof-$i.json -w proofs/test-witness.$i
+    done
+
+    for i in `seq 10 19`; do
+      ~/zokrates compute-witness -o proofs/prod-witness.$i -a $i $((i*i))
+      ~/zokrates generate-proof -j proofs/prod-proof-$i.json -w proofs/prod-witness.$i
+    done
+
 ## OpenSea
 
 The storefront is at
 [https://rinkeby.opensea.io/storefront/sleepytoken-2](https://rinkeby.opensea.io/storefront/sleepytoken-2).
 I tested transferring tokens #2, #3, #6, #8, and #9 between accounts.
-
 
 ## Testing
 
